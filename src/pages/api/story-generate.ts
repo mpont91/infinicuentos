@@ -16,8 +16,7 @@ export async function GET() {
   } catch (error) {
     return new Response(
       JSON.stringify({
-        message: 'Something went wrong',
-        details: error.message,
+        message: 'Something went wrong while interacting with AI',
       }),
       {
         status: 500,
