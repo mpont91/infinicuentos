@@ -1,16 +1,111 @@
 ---
+import IndexLayout from '../layouts/IndexLayout.astro'
 
+const genres = [
+  'Aventura',
+  'Fantasía',
+  'Ciencia ficción',
+  'Misterio',
+  'Terror',
+  'Histórico',
+  'Romántico',
+  'Suspense',
+  'Comedia',
+]
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<IndexLayout>
+  <div class="container mx-auto">
+    <h1 class="text-2xl">Infinicuentos</h1>
+    <p>Estás a punto de vivir una experiencia única! ¿Estás preparado?</p>
+    <p>Selecciona el género que más te apasione y tu historia empezará...</p>
+
+    <div id="genres">
+      {
+        genres.map((genre) => (
+          <button
+            type="button"
+            class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+          >
+            {genre}
+          </button>
+        ))
+      }
+    </div>
+
+    <ol
+      id="storyline"
+      class="relative border-s border-gray-200 dark:border-gray-700"
+    >
+      <li class="ms-6">
+        <span
+          class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
+        >
+          <svg
+            class="w-4 h-4 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+            ></path>
+          </svg>
+        </span>
+        <h3 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+          Lorem Ipsum
+        </h3>
+        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+          quis dignissim tellus. Donec euismod nunc ex, ultrices aliquam ligula
+          mattis non. In accumsan feugiat odio in lacinia. Integer ultricies
+          hendrerit ex in molestie. Donec a dolor eu odio venenatis tempus.
+          Nulla vulputate a lorem a egestas. Interdum et malesuada fames ac ante
+          ipsum primis in faucibus. Praesent id sem ut mauris dapibus tempus.
+        </p>
+        <button
+          type="button"
+          class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        >
+          Opción A
+        </button>
+        <button
+          type="button"
+          class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        >
+          Opción B
+        </button>
+        <button
+          type="button"
+          class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+        >
+          Opción C
+        </button>
+      </li>
+    </ol>
+  </div>
+  <script>
+    import anime from 'animejs/lib/anime.es.js'
+
+    anime({
+      targets: '#genres > button',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      delay: 200,
+      duration: 1000,
+      easing: 'easeOutExpo',
+    })
+
+    anime({
+      targets: '#storyline > li',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      delay: 1000,
+      duration: 1000,
+      easing: 'easeOutExpo',
+    })
+  </script>
+</IndexLayout>
