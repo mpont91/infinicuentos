@@ -1,8 +1,7 @@
 import { createOpenAI } from '@ai-sdk/openai'
-import { generateText } from 'ai'
-import type { Message } from '../types.ts'
+import { generateText, type CoreMessage } from 'ai'
 
-export async function generate(messages: Message[]) {
+export async function generate(messages: CoreMessage[]) {
   const groq = createOpenAI({
     baseURL: 'https://api.groq.com/openai/v1',
     apiKey: import.meta.env.GROQ_API_KEY,

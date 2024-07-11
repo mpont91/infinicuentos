@@ -14,10 +14,11 @@ export async function POST({ request }: { request: Request }) {
         'Content-Type': 'application/json',
       },
     })
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : ''
     return new Response(
       JSON.stringify({
-        message: `Something went wrong generating the story. ${error.message}`,
+        message: `Something went wrong generating the story. ${errorMessage}`,
       }),
       {
         status: 500,

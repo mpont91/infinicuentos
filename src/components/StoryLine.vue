@@ -34,12 +34,13 @@ import anime from 'animejs'
 import StoryFragment from './StoryFragment.vue'
 import Loading from './Loading.vue'
 import { genres, prompt } from '../constants.ts'
-import type { Message } from '../types.js'
+import type { CoreMessage } from 'ai'
+import type { Response } from '../types.ts'
 
 const isLoading = ref(true)
 const genreSelected = ref('')
-const fragments = reactive([])
-const messages: Message[] = []
+const fragments: string[] = reactive([])
+const messages: CoreMessage[] = []
 
 onMounted(() => {
   isLoading.value = false
@@ -98,7 +99,7 @@ async function apiRequest() {
       messages: messages,
     }),
   })
-  const response = await result.json()
+  const response: Response = await result.json()
   fragments.push(response.message)
   messages.push({
     role: 'assistant',
