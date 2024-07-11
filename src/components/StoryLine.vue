@@ -18,11 +18,14 @@
         {{ genre }}
       </button>
     </div>
-    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+    <ol
+      id="storyline"
+      class="relative border-s border-gray-200 dark:border-gray-700"
+    >
       <story-fragment
-        v-for="fragment in fragments"
+        v-for="(fragment, index) in fragments"
         :text="fragment"
-        :id="fragments.length"
+        :id="index + 1"
         @addFragment="addFragment"
       />
     </ol>
@@ -71,6 +74,17 @@ onMounted(() => {
 })
 
 async function begin(genre: string) {
+  genres.forEach((value, index) => {
+    if (value !== genre) {
+      anime({
+        targets: `#genres > button:nth-child(${index + 1})`,
+        opacity: [1, 0],
+        duration: 1000,
+        easing: 'easeOutExpo',
+      })
+    }
+  })
+
   genreSelected.value = genre
   messages.push({
     role: 'assistant',
