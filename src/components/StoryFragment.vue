@@ -32,7 +32,7 @@
   </li>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import anime from 'animejs'
 const props = defineProps({
   id: {
@@ -53,6 +53,12 @@ const emit = defineEmits(['addFragment'])
 
 const isUsed: Boolean = ref(false)
 
+onMounted(() => {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth',
+  })
+})
 function addFragment(choice: string) {
   props.choices.forEach((value, index) => {
     if (value !== choice) {
