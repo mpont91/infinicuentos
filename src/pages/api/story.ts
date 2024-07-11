@@ -1,8 +1,9 @@
 import { generate } from '../../server/ai.ts'
 
-export async function GET() {
+export async function POST({ request }: { request: Request }) {
   try {
-    const generation = await generate()
+    const params = await request.json()
+    const generation = await generate(params.messages)
     const result = JSON.stringify({
       message: generation,
     })
@@ -16,7 +17,7 @@ export async function GET() {
   } catch (error) {
     return new Response(
       JSON.stringify({
-        message: 'Something went wrong while interacting with AI',
+        message: `Something went wrong generating the story. ${error.message}`,
       }),
       {
         status: 500,

@@ -28,16 +28,18 @@
     </ol>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { reactive, onMounted, ref } from 'vue'
-import StoryFragment from './StoryFragment.vue'
 import anime from 'animejs'
-import { genres } from '../constants/story.ts'
+import StoryFragment from './StoryFragment.vue'
 import Loading from './Loading.vue'
+import { genres, prompt } from '../constants.ts'
+import type { Message } from '../types.js'
 
 const isLoading = ref(true)
 const genreSelected = ref('')
 const fragments = reactive([])
+const messages: Message[] = []
 
 onMounted(() => {
   isLoading.value = false
@@ -67,16 +69,40 @@ onMounted(() => {
   })
 })
 
-async function begin(genre) {
+async function begin(genre: string) {
   genreSelected.value = genre
-  const api = await fetch('/api/story-generate')
-  const response = await api.json()
-  fragments.push(response.message)
+  messages.push({
+    role: 'assistant',
+    content: prompt.replace('[genre]', genre),
+  })
+
+  await apiRequest()
 }
 
-async function addFragment() {
-  const api = await fetch('/api/story-generate')
-  const response = await api.json()
+async function addFragment(choice: string) {
+  messages.push({
+    role: 'user',
+    content: choice,
+  })
+
+  await apiRequest()
+}
+
+async function apiRequest() {
+  const result = await fetch('/api/story', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      messages: messages,
+    }),
+  })
+  const response = await result.json()
   fragments.push(response.message)
+  messages.push({
+    role: 'assistant',
+    content: response.message,
+  })
 }
 </script>

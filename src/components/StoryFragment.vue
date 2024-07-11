@@ -19,12 +19,13 @@
       {{ props.text }}
     </p>
     <button
+      v-for="choice in ['Opción 1', 'Opción 2', 'Opción 3']"
       type="button"
-      @click="addFragment"
+      @click="addFragment(choice)"
       :disabled="isUsed"
       class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
     >
-      Opción A
+      {{ choice }}
     </button>
   </li>
 </template>
@@ -45,8 +46,8 @@ const emit = defineEmits(['addFragment'])
 
 const isUsed: Boolean = ref(false)
 
-function addFragment() {
+function addFragment(choice: string) {
   isUsed.value = true
-  emit('addFragment')
+  emit('addFragment', choice)
 }
 </script>
