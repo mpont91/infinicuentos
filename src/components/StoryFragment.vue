@@ -1,5 +1,5 @@
 <template>
-  <li class="mb-10 ms-6">
+  <li :class="`fragment-${props.id} mb-10 ms-6`">
     <span
       class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900"
     >
@@ -31,6 +31,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
   text: {
     type: String,
     required: true,
