@@ -1,4 +1,8 @@
-import { generate } from '../../server/ai.ts'
+import { generate } from '../../ai.ts'
+
+const headers = {
+  'Content-Type': 'application/json',
+}
 
 export async function POST({ request }: { request: Request }) {
   try {
@@ -10,9 +14,7 @@ export async function POST({ request }: { request: Request }) {
 
     return new Response(result, {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: headers,
     })
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : ''
@@ -22,9 +24,7 @@ export async function POST({ request }: { request: Request }) {
       }),
       {
         status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
       },
     )
   }
