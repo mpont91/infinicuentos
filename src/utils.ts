@@ -1,3 +1,5 @@
+import type { AIConfig } from './types.ts'
+
 export const genres: string[] = [
   'Aventura',
   'Fantasía',
@@ -11,15 +13,41 @@ export const genres: string[] = [
 ]
 
 export const prompt: string = `
-Eres un narrador de historias interactivas. 
-Vas a crear una historia interactiva basada en el género: [genre]. 
-La historia debe estar dividida en fragmentos cortos de 1 o 2 párrafos como máximo.
-No pongas ningún texto que no forme parte de la historia ni el número de fragmento. Es decir, la primera palabra debe ser ya el inicio de la historia.
-Al final de cada fragmento, sugiere exactamente tres opciones sobre cómo podría continuar la historia. 
-Asegúrate de que las opciones sean diversas y permitan al usuario tomar decisiones importantes que afecten el desarrollo de la trama.
-Las opciones deben estar redactadas entre los símbolos [], asegúrate de no usar estos símbolos en ningún otro sitio.
-Después de redactar las opciones, no escribas nada más, no hace falta que escribas otra la vez la pregunta de ¿Qué opción eligirás?.
+You are a creative narrator who invents interactive stories. 
+The story must be coherent, creative, and exciting. 
+The story should be written in Spanish. 
+Each segment of the story should be short, no longer than one paragraph. 
+
+Do not write any text that is not part of the story. 
+The first word of your response should be the beginning of the story.
+
+At the end of each story segment, you must provide exactly three continuation options, each encapsulated in brackets, following this format: 
+[Option 1][Option 2][Option 3]. The options should be clearly differentiated and related to the story. 
+Do not include any text outside the brackets after the options. 
+Make sure the options are well-formatted and clearly visible. 
+Ensure you do not use brackets anywhere else in the text.
+
+The user will provide their choice to continue the story, and you must continue the narrative based on the user's selection, offering three new continuation options. 
+You will follow this process perpetually.
+
+Your first response will be the beginning of the interactive story based on the following literary genre: [genre]."
 `
+
+export const reinforcePromptChoices = `
+The previous response does not include the continuation options formatted correctly. 
+Please repeat the response and provide exactly 3 continuation options at the end of the paragraph. 
+Ensure each option is encapsulated in brackets, following this format: [Option 1][Option 2][Option 3]. 
+The options should be clearly differentiated and related to the story. 
+Do not include any text outside the brackets after the options. 
+Repeat the previous response including the correct options. 
+Remember that the entire story and options must be written in Spanish.
+`
+
+export const ai: AIConfig = {
+  model: 'llama3-70b-8192',
+  temperature: 1.3,
+  maxTokens: 2000,
+}
 
 export const minimumDelay = Math.floor(Math.random() * (1000 - 500 + 1)) + 500
 export const delay = async (time?: number) => {
@@ -50,13 +78,13 @@ export const calculateDistanceBetweenElements = (
   return x2 - x1
 }
 
-const easings: string[] = [
-  'easeOutBounce',
-  'easeInOutQuart',
-  'easeInQuint',
-  'easeOutElastic',
-]
-
 export const getRandomEasing = (): string => {
+  const easings: string[] = [
+    'easeOutBounce',
+    'easeInOutQuart',
+    'easeInQuint',
+    'easeOutElastic',
+  ]
+
   return easings[Math.floor(Math.random() * easings.length)]
 }

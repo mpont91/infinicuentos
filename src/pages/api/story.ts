@@ -1,4 +1,5 @@
 import { generate } from '../../ai.ts'
+import type { FragmentType } from '../../types.ts'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -7,10 +8,8 @@ const headers = {
 export async function POST({ request }: { request: Request }) {
   try {
     const params = await request.json()
-    const generation = await generate(params.messages)
-    const result = JSON.stringify({
-      message: generation,
-    })
+    const generation: FragmentType = await generate(params.messages)
+    const result: string = JSON.stringify(generation)
 
     return new Response(result, {
       status: 200,

@@ -10,9 +10,9 @@
     >
       <Fragment
         v-for="(fragment, index) in fragments"
-        :text="fragment"
+        :text="fragment.message"
         :id="index + 1"
-        :choices="['Opción 1', 'Opción 2', 'Opción 3']"
+        :choices="fragment.choices"
         @addFragment="addFragment"
       />
     </ol>
@@ -29,11 +29,11 @@ import Fragment from './Fragment.vue'
 import LoadingFragment from './LoadingFragment.vue'
 import { delay, minimumDelay, prompt } from '../utils.ts'
 import type { CoreMessage } from 'ai'
-import type { Response } from '../types.ts'
+import type { FragmentType } from '../types.ts'
 
 const isLoading: boolean = ref(true)
 const isLoadingFragment: boolean = ref(false)
-const fragments: string[] = reactive([])
+const fragments: FragmentType[] = reactive([])
 const messages: CoreMessage[] = []
 
 onMounted(async () => {
@@ -43,7 +43,7 @@ onMounted(async () => {
 
 async function begin(genre: string) {
   messages.push({
-    role: 'assistant',
+    role: 'system',
     content: prompt.replace('[genre]', genre),
   })
 
@@ -73,17 +73,17 @@ async function apiRequest() {
     }),
   })
 
-  const response: Response = await result.json()
+  const fragment: FragmentType = await result.json()
 
   const elapsedTime: number = Date.now() - startTime
   if (elapsedTime < minimumDelay) {
     await delay(minimumDelay - elapsedTime)
   }
 
-  fragments.push(response.message)
+  fragments.push(fragment)
   messages.push({
     role: 'assistant',
-    content: response.message,
+    content: fragment.message,
   })
 
   isLoadingFragment.value = false
