@@ -49,8 +49,10 @@ export const ai: AIConfig = {
   maxTokens: 2000,
 }
 
-export const minimumDelay = Math.floor(Math.random() * (1000 - 500 + 1)) + 500
+export const throttle: number = 3000
+
 export const delay = async (time?: number) => {
+  const minimumDelay = 500
   await new Promise((resolve) => setTimeout(resolve, time ?? minimumDelay))
 }
 

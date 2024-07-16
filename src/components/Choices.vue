@@ -4,7 +4,7 @@
       v-for="(choice, index) in choices"
       type="button"
       @click="selectChoice(choice, index)"
-      :disabled="!!choiceSelected"
+      :disabled="!!choiceSelected || isCooldown"
       :class="[choice !== choiceSelected ? buttonClass : buttonClassActive]"
     >
       {{ choice }}
@@ -13,12 +13,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import anime from 'animejs'
 import {
   buttonClass,
   buttonClassActive,
   calculateDistanceBetweenElements,
+  delay,
   getRandomEasing,
 } from '../utils.ts'
 
@@ -35,6 +36,13 @@ const props = defineProps({
 
 const emit = defineEmits(['selectChoice'])
 const choiceSelected: string = ref('')
+const isCooldown: boolean = ref(true)
+
+onMounted(async () => {
+  //Throttle
+  await delay(2000)
+  isCooldown.value = false
+})
 
 function selectChoice(choice: string, index: number) {
   choiceSelected.value = choice
