@@ -1,7 +1,10 @@
 <template>
-  <h1 class="text-2xl mt-1 mb-4">Infinicuentos</h1>
+  <div class="flex mt-1 mb-4">
+    <h1 class="text-2xl flex-1">Infinicuentos</h1>
+    <Restart @restart="restart" class="flex-none" />
+  </div>
   <Loading v-if="isLoading" />
-  <div v-show="!isLoading">
+  <div :key="renderKey" id="content" v-show="!isLoading">
     <Introduction />
     <Genre @selectGenre="begin" />
     <ol
@@ -27,14 +30,17 @@ import Introduction from './Introduction.vue'
 import Genre from './genre.vue'
 import Fragment from './Fragment.vue'
 import LoadingFragment from './LoadingFragment.vue'
+import Restart from './Restart.vue'
 import { delay, minimumDelay, prompt } from '../utils.ts'
 import type { CoreMessage } from 'ai'
 import type { FragmentType } from '../types.ts'
+import anime from 'animejs'
 
 const isLoading: boolean = ref(true)
 const isLoadingFragment: boolean = ref(false)
 const fragments: FragmentType[] = reactive([])
 const messages: CoreMessage[] = []
+const renderKey = ref(0)
 
 onMounted(async () => {
   await delay()
@@ -87,5 +93,22 @@ async function apiRequest() {
   })
 
   isLoadingFragment.value = false
+}
+
+async function restart() {
+  anime({
+    targets: `#content`,
+    opacity: [1, 0],
+    translateY: 1000,
+    duration: 2500,
+    easing: 'easeOutExpo',
+  })
+  await delay(700)
+  isLoading.value = true
+  fragments.splice(0, fragments.length)
+  messages.splice(0, fragments.length)
+  renderKey.value += 1
+  await delay()
+  isLoading.value = false
 }
 </script>
