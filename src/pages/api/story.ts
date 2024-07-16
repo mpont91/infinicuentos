@@ -23,6 +23,15 @@ export async function POST({ request }: { request: Request }) {
       message = error.message
     }
 
+    if (error instanceof Error && 'reason' in error) {
+      const errorWithReason = error as { reason: string }
+      if (errorWithReason.reason === 'maxRetriesExceeded') {
+        message =
+          'Se ha alcanzado el límite de peticiones por minuto. ' +
+          'Espera unos segundos antes de volver a intentar...'
+      }
+    }
+
     const fragmentError: FragmentType = {
       message: message,
       choices: ['Volver a intentar'],

@@ -21,6 +21,7 @@ import {
   calculateDistanceBetweenElements,
   delay,
   getRandomEasing,
+  throttle,
 } from '../utils.ts'
 
 const props = defineProps({
@@ -40,7 +41,7 @@ const isCooldown: boolean = ref(true)
 
 onMounted(async () => {
   //Throttle
-  await delay(2000)
+  await delay(throttle)
   isCooldown.value = false
 })
 
