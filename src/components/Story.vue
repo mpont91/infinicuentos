@@ -20,7 +20,9 @@
         :text="fragment.message"
         :id="index + 1"
         :choices="fragment.choices"
+        :isError="fragment.isError"
         @addFragment="addFragment"
+        @retry="retry"
       />
     </ol>
     <LoadingFragment v-if="isLoadingFragment" />
@@ -70,6 +72,10 @@ async function addFragment(choice: string) {
   await apiRequest()
 }
 
+async function retry() {
+  await apiRequest()
+}
+
 async function apiRequest() {
   isLoadingFragment.value = true
   const startTime: number = Date.now()
@@ -92,10 +98,13 @@ async function apiRequest() {
   }
 
   fragments.push(fragment)
-  messages.push({
-    role: 'assistant',
-    content: fragment.message,
-  })
+
+  if (result.status === 200) {
+    messages.push({
+      role: 'assistant',
+      content: fragment.message,
+    })
+  }
 
   isLoadingFragment.value = false
 }

@@ -1,5 +1,6 @@
 import { generate } from '../../ai.ts'
 import type { FragmentType } from '../../types.ts'
+import { ChoicesError } from '../../errors/ChoicesError.ts'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -16,15 +17,20 @@ export async function POST({ request }: { request: Request }) {
       headers: headers,
     })
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : ''
-    return new Response(
-      JSON.stringify({
-        message: `Something went wrong generating the story. ${errorMessage}`,
-      }),
-      {
-        status: 500,
-        headers: headers,
-      },
-    )
+    let message: string = 'Algo inesperado ha ido mal al generar la historia...'
+
+    if (error instanceof ChoicesError) {
+      message = error.message
+    }
+
+    const fragmentError: FragmentType = {
+      message: message,
+      choices: ['Volver a intentar'],
+      isError: true,
+    }
+    return new Response(JSON.stringify(fragmentError), {
+      status: 500,
+      headers: headers,
+    })
   }
 }

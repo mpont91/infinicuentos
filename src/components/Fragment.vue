@@ -1,9 +1,15 @@
 <template>
   <li :id="`fragment-${id}`" class="mb-10 ms-6">
     <span
-      class="absolute flex items-center justify-center w-6 h-6 bg-yellow-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-yellow-900"
+      class="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900"
+      :class="[
+        isError
+          ? 'bg-red-300 dark:bg-red-900'
+          : 'bg-yellow-300 dark:bg-yellow-700',
+      ]"
     >
-      <StarIcon />
+      <ExclamationIcon v-if="isError" />
+      <StarIcon v-else />
     </span>
     <p
       class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400 text-justify"
@@ -19,6 +25,7 @@ import { onMounted } from 'vue'
 import anime from 'animejs'
 import Choices from './Choices.vue'
 import StarIcon from './StarIcon.vue'
+import ExclamationIcon from './ExclamationIcon.vue'
 
 const props = defineProps({
   id: {
@@ -33,9 +40,13 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  isError: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const emit = defineEmits(['addFragment'])
+const emit = defineEmits(['addFragment', 'retry'])
 
 onMounted(() => {
   anime({
@@ -51,6 +62,10 @@ onMounted(() => {
 })
 
 function addFragment(choice: string) {
-  emit('addFragment', choice)
+  if (props.isError) {
+    emit('retry')
+  } else {
+    emit('addFragment', choice)
+  }
 }
 </script>

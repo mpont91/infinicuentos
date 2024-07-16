@@ -2,6 +2,7 @@ import { createOpenAI } from '@ai-sdk/openai'
 import { generateText, type CoreMessage } from 'ai'
 import type { FragmentType } from './types.ts'
 import { ai, reinforcePromptChoices } from './utils.ts'
+import { ChoicesError } from './errors/ChoicesError.ts'
 
 const groq = createOpenAI({
   baseURL: 'https://api.groq.com/openai/v1',
@@ -12,11 +13,11 @@ const regex = /\[(.*?)\]/g
 
 export async function generate(messages: CoreMessage[]) {
   const limitTries: number = 5
-  let isValid: boolean = false
+  let isChoicesValid: boolean = false
   let currentTry: number = 0
   let text: string = ''
 
-  while (!isValid && currentTry < limitTries) {
+  while (!isChoicesValid && currentTry < limitTries) {
     const result = await generateText({
       model: groq(ai.model),
       messages: messages,
@@ -25,8 +26,8 @@ export async function generate(messages: CoreMessage[]) {
     })
 
     text = result.text
-    isValid = validateGeneratedText(text)
-    if (!isValid) {
+    isChoicesValid = validateChoices(text)
+    if (!isChoicesValid) {
       messages.push({
         role: 'system',
         content: reinforcePromptChoices,
@@ -35,14 +36,14 @@ export async function generate(messages: CoreMessage[]) {
     currentTry++
   }
 
-  if (isValid) {
-    return createFragment(text)
+  if (!isChoicesValid) {
+    throw new ChoicesError()
   }
 
-  throw new Error('IA is not working properly...')
+  return createFragment(text)
 }
 
-function validateGeneratedText(text: string): boolean {
+function validateChoices(text: string): boolean {
   return (text.match(regex) || []).length === 3
 }
 
@@ -58,5 +59,6 @@ function createFragment(text: string): FragmentType {
   return {
     message: message,
     choices: choices,
+    isError: false,
   }
 }
