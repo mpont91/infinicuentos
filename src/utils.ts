@@ -13,6 +13,24 @@ export const genres: string[] = [
 ]
 
 export const prompt: string = `
+
+
+
+
+
+
+The user can introduce a customized choice that might not be related to the provided options. 
+In this case, you must be creative and attempt to continue the story based on the user's customized choice. 
+If it is absolutely impossible to continue the story with the customized choice, explain that you couldn't continue the story with that choice and provide three new options.
+
+You will follow this process perpetually.
+
+Your first response will be the beginning of the interactive story based on the following literary genre: [genre]."
+
+
+
+
+
 You are a creative narrator who invents interactive stories. 
 The story must be coherent, creative, and exciting. 
 The story should be written in Spanish. 
@@ -28,9 +46,13 @@ Make sure the options are well-formatted and clearly visible.
 Ensure you do not use brackets anywhere else in the text.
 
 The user will provide their choice to continue the story, and you must continue the narrative based on the user's selection, offering three new continuation options. 
+The user can introduce a customized choice that might not be related to the provided options. 
+In this case, you must be creative and attempt to continue the story based on the user's customized choice. 
+If it is absolutely impossible to continue the story with the customized choice, explain that you couldn't continue the story with that choice and provide three new options.
+
 You will follow this process perpetually.
 
-Your first response will be the beginning of the interactive story based on the following literary genre: [genre]."
+Your first response will be the beginning of the interactive story based on the literary genre or text following: [genre]."
 `
 
 export const reinforcePromptChoices = `
@@ -78,15 +100,4 @@ export const calculateDistanceBetweenElements = (
     document?.querySelector(selector2)?.getBoundingClientRect().x ?? 0
 
   return x2 - x1
-}
-
-export const getRandomEasing = (): string => {
-  const easings: string[] = [
-    'easeOutBounce',
-    'easeInOutQuart',
-    'easeInQuint',
-    'easeOutElastic',
-  ]
-
-  return easings[Math.floor(Math.random() * easings.length)]
 }

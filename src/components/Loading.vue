@@ -12,6 +12,7 @@
       <div class="h-10 bg-gray-300 rounded-lg dark:bg-gray-600 w-28"></div>
       <div class="h-10 bg-gray-200 rounded-lg dark:bg-gray-700 w-24"></div>
       <div class="h-10 bg-gray-300 rounded-lg dark:bg-gray-600 w-24"></div>
+      <div class="h-10 bg-gray-300 rounded-lg dark:bg-gray-600 w-60"></div>
     </div>
     <span class="sr-only">Loading...</span>
   </div>

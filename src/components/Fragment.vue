@@ -22,10 +22,10 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import anime from 'animejs'
 import Choices from './Choices.vue'
 import StarIcon from './StarIcon.vue'
 import ExclamationIcon from './ExclamationIcon.vue'
+import { showFragment } from '../anime.ts'
 
 const props = defineProps({
   id: {
@@ -49,12 +49,7 @@ const props = defineProps({
 const emit = defineEmits(['addFragment', 'retry'])
 
 onMounted(() => {
-  anime({
-    targets: `#fragment-${props.id}`,
-    opacity: [0, 1],
-    duration: 2500,
-    easing: 'easeOutExpo',
-  })
+  showFragment([`#fragment-${props.id}`])
   window.scrollTo({
     top: document.body.scrollHeight,
     behavior: 'smooth',

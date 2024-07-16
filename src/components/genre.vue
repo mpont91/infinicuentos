@@ -1,40 +1,65 @@
 <template>
-  <div id="genres" class="my-4">
-    <button
-      v-for="(genre, index) in genres"
-      @click="selectGenre(genre, index)"
-      type="button"
-      :disabled="!!genreSelected"
-      :class="[genre !== genreSelected ? buttonClass : buttonClassActive]"
-    >
-      {{ genre }}
-    </button>
-  </div>
+  <form @submit="creativeGenreSelected">
+    <div id="genres" class="my-4 flex flex-wrap">
+      <button
+        v-for="(genre, index) in genres"
+        @click="selectGenre(genre, index)"
+        type="button"
+        :disabled="!!genreSelected"
+        :class="[
+          !isCreativeGenreSelected && genre === genreSelected
+            ? buttonClassActive
+            : buttonClass,
+        ]"
+      >
+        {{ genre }}
+      </button>
+      <div id="creative-genre" class="min-w-96">
+        <div class="relative w-1/2">
+          <input
+            type="text"
+            placeholder="Escribe el género..."
+            required
+            :disabled="!!genreSelected"
+            v-model="creativeGenre"
+            :class="[
+              isCreativeGenreSelected && creativeGenre === genreSelected
+                ? buttonClassActive
+                : 'block p-2.5 w-full z-20 text-sm rounded-lg border rounded-2 bg-transparent dark:border-blue-500 dark:text-blue-500',
+            ]"
+          />
+          <button
+            type="submit"
+            :disabled="!!genreSelected"
+            class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium rounded-e-lg border focus:ring-4 focus:outline-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+          >
+            <ArrowRightIcon />
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import anime from 'animejs'
 import {
   buttonClass,
   buttonClassActive,
   genres,
   calculateDistanceBetweenElements,
-  getRandomEasing,
 } from '../utils.ts'
+import ArrowRightIcon from './ArrowRightIcon.vue'
+import { slideUpIn, fadeOutSlow, fadeOutFast, slide } from '../anime.ts'
 
 const emit = defineEmits(['selectGenre'])
+
 const genreSelected: string = ref('')
+const creativeGenre: string = ref('')
+const isCreativeGenreSelected: boolean = ref(false)
 
 onMounted(() => {
-  anime({
-    targets: '#genres > button',
-    opacity: [0, 1],
-    translateY: [20, 0],
-    delay: 2000,
-    duration: 1000,
-    easing: 'easeOutExpo',
-  })
+  slideUpIn(['#genres > button', '#creative-genre'], 2000)
 })
 
 function selectGenre(genre: string, index: number) {
@@ -44,17 +69,23 @@ function selectGenre(genre: string, index: number) {
   emit('selectGenre', genre)
 }
 
+function creativeGenreSelected(event: Event) {
+  event.preventDefault()
+  isCreativeGenreSelected.value = true
+  selectGenre(creativeGenre.value, genres.length + 1)
+  animateCreativeButton()
+}
+
 function animateUnselectedButtons(genre: string) {
   genres.forEach((value, index) => {
-    if (value !== genre) {
-      anime({
-        targets: `#genres > button:nth-child(${index + 1})`,
-        opacity: [1, 0],
-        duration: 800,
-        easing: 'easeInQuad',
-      })
+    if (isCreativeGenreSelected.value || value !== genre) {
+      fadeOutSlow([`#genres > button:nth-child(${index + 1})`])
     }
   })
+
+  if (!isCreativeGenreSelected.value) {
+    fadeOutSlow(['#creative-genre'])
+  }
 }
 
 function animateSelectedButton(index: number) {
@@ -63,12 +94,16 @@ function animateSelectedButton(index: number) {
     `#genres > button:nth-child(${index + 1})`,
   )
 
-  anime({
-    targets: `#genres > button:nth-child(${index + 1}`,
-    translateX: [0, -distance],
-    duration: 1000,
-    delay: 700,
-    easing: getRandomEasing(),
-  })
+  slide([`#genres > button:nth-child(${index + 1}`], -distance)
+}
+
+function animateCreativeButton() {
+  const distance: number = calculateDistanceBetweenElements(
+    '#genres > button:first-child',
+    `#creative-genre`,
+  )
+
+  fadeOutFast(['#creative-genre button'])
+  slide(['#creative-genre'], -distance)
 }
 </script>

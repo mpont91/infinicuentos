@@ -7,24 +7,10 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import anime from 'animejs'
+import { slideUpIn } from '../anime.ts'
 
 onMounted(async () => {
-  anime({
-    targets: '#introduction > p:nth-child(1)',
-    opacity: [0, 1],
-    translateY: [20, 0],
-    delay: 1200,
-    duration: 1000,
-    easing: 'easeOutExpo',
-  })
-  anime({
-    targets: '#introduction > p:nth-child(2)',
-    opacity: [0, 1],
-    translateY: [20, 0],
-    delay: 1600,
-    duration: 1000,
-    easing: 'easeOutExpo',
-  })
+  slideUpIn(['#introduction > p:nth-child(1)'], 1200)
+  slideUpIn(['#introduction > p:nth-child(2)'], 1600)
 })
 </script>

@@ -40,7 +40,7 @@ import Restart from './Restart.vue'
 import { delay, throttle, prompt } from '../utils.ts'
 import type { CoreMessage } from 'ai'
 import type { FragmentType } from '../types.ts'
-import anime from 'animejs'
+import { fall } from '../anime.ts'
 
 const isLoading: boolean = ref(true)
 const isLoadingFragment: boolean = ref(false)
@@ -111,13 +111,7 @@ async function apiRequest() {
 
 async function restart() {
   restartIsDisabled.value = true
-  anime({
-    targets: `#content`,
-    opacity: [1, 0],
-    translateY: 1000,
-    duration: 2500,
-    easing: 'easeOutExpo',
-  })
+  fall(['#content'])
   await delay()
   isLoading.value = true
   fragments.splice(0, fragments.length)
