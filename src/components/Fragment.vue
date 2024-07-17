@@ -23,8 +23,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import Choices from './Choices.vue'
-import StarIcon from './StarIcon.vue'
-import ExclamationIcon from './ExclamationIcon.vue'
+import StarIcon from '../icons/StarIcon.vue'
+import ExclamationIcon from '../icons/ExclamationIcon.vue'
 import { showFragment } from '../anime.ts'
 
 const props = defineProps({

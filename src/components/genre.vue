@@ -49,7 +49,7 @@ import {
   genres,
   calculateDistanceBetweenElements,
 } from '../utils.ts'
-import ArrowRightIcon from './ArrowRightIcon.vue'
+import ArrowRightIcon from '../icons/ArrowRightIcon.vue'
 import { slideUpIn, fadeOutSlow, fadeOutFast, slide } from '../anime.ts'
 
 const emit = defineEmits(['selectGenre'])
@@ -59,7 +59,7 @@ const creativeGenre: string = ref('')
 const isCreativeGenreSelected: boolean = ref(false)
 
 onMounted(() => {
-  slideUpIn(['#genres > button', '#creative-genre'], 2000)
+  slideUpIn(['#genres > button', '#creative-genre'], 700)
 })
 
 function selectGenre(genre: string, index: number) {

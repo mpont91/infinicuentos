@@ -48,11 +48,10 @@ import {
   buttonClassActive,
   calculateDistanceBetweenElements,
   delay,
-  genres,
   throttle,
 } from '../utils.ts'
 import { fadeOutFast, fadeOutSlow, slide } from '../anime.ts'
-import ArrowRightIcon from './ArrowRightIcon.vue'
+import ArrowRightIcon from '../icons/ArrowRightIcon.vue'
 
 const props = defineProps({
   fragmentId: {

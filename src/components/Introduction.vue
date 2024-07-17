@@ -10,7 +10,7 @@ import { onMounted } from 'vue'
 import { slideUpIn } from '../anime.ts'
 
 onMounted(async () => {
-  slideUpIn(['#introduction > p:nth-child(1)'], 1200)
-  slideUpIn(['#introduction > p:nth-child(2)'], 1600)
+  slideUpIn(['#introduction > p:nth-child(1)'], 100)
+  slideUpIn(['#introduction > p:nth-child(2)'], 300)
 })
 </script>
