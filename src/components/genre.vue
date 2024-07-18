@@ -1,6 +1,6 @@
 <template>
   <form @submit="creativeGenreSelected">
-    <div id="genres" class="my-4 flex flex-wrap">
+    <div id="genres" class="mt-4 mb-20 flex flex-wrap">
       <button
         v-for="(genre, index) in genres"
         @click="selectGenre(genre, index)"
@@ -31,9 +31,9 @@
           <button
             type="submit"
             :disabled="!!genreSelected"
-            class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium rounded-e-lg border focus:ring-4 focus:outline-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+            class="absolute top-0 end-0 px-2.5 h-full text-sm font-medium rounded-e-lg border focus:ring-4 focus:outline-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
           >
-            <ArrowRightIcon />
+            <ChevronRightIcon />
           </button>
         </div>
       </div>
@@ -48,8 +48,9 @@ import {
   buttonClassActive,
   genres,
   calculateDistanceBetweenElements,
+  scrollToBottom,
 } from '../utils.ts'
-import ArrowRightIcon from '../icons/ArrowRightIcon.vue'
+import ChevronRightIcon from '../icons/ChevronRightIcon.vue'
 import { slideUpIn, fadeOutSlow, fadeOutFast, slide } from '../anime.ts'
 
 const emit = defineEmits(['selectGenre'])
@@ -60,6 +61,7 @@ const isCreativeGenreSelected: boolean = ref(false)
 
 onMounted(() => {
   slideUpIn(['#genres > button', '#creative-genre'], 700)
+  scrollToBottom()
 })
 
 function selectGenre(genre: string, index: number) {

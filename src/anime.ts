@@ -21,7 +21,7 @@ export const slideUpIn = (targets: string[], delay: number) => {
   anime({
     targets: targets,
     opacity: [0, 1],
-    translateY: [250, 0],
+    translateY: [50, 0],
     delay: delay,
     duration: 1000,
     easing: 'easeOutExpo',

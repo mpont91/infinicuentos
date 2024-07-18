@@ -1,30 +1,31 @@
 <template>
-  <div id="controls">
-    <Restart
-      class="mb-8"
-      :isStarted="isStarted"
-      :isDisabled="restartIsDisabled"
-      @restart="restart"
-    />
-  </div>
-  <div :key="renderKey" id="content" v-show="isStarted">
-    <Introduction />
-    <Genre @selectGenre="beginStory" />
-    <ol
-      id="storyline"
-      class="relative border-s border-gray-200 dark:border-gray-700"
-    >
-      <Fragment
-        v-for="(fragment, index) in fragments"
-        :text="fragment.message"
-        :id="index + 1"
-        :choices="fragment.choices"
-        :isError="fragment.isError"
-        @addFragment="addFragment"
-        @retry="retry"
+  <div id="story" class="mx-auto max-w-3xl">
+    <div id="controls" class="text-center my-8">
+      <Restart
+        :isStarted="isStarted"
+        :isDisabled="restartIsDisabled"
+        @restart="restart"
       />
-    </ol>
-    <LoadingFragment v-if="isLoadingFragment" />
+    </div>
+    <div :key="renderKey" id="content" v-if="isStarted">
+      <Introduction />
+      <Genre @selectGenre="beginStory" />
+      <ol
+        id="storyline"
+        class="relative border-s border-gray-200 dark:border-gray-700"
+      >
+        <Fragment
+          v-for="(fragment, index) in fragments"
+          :text="fragment.message"
+          :id="index + 1"
+          :choices="fragment.choices"
+          :isError="fragment.isError"
+          @addFragment="addFragment"
+          @retry="retry"
+        />
+      </ol>
+      <LoadingFragment v-if="isLoadingFragment" />
+    </div>
   </div>
 </template>
 
@@ -106,9 +107,9 @@ async function restart() {
   restartIsDisabled.value = true
   if (isStarted.value) {
     fall(['#content'])
+    await delay()
     fragments.splice(0, fragments.length)
     messages.splice(0, fragments.length)
-    await delay()
   }
   renderKey.value += 1
   isStarted.value = true

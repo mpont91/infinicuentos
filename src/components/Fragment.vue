@@ -4,15 +4,15 @@
       class="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900"
       :class="[
         isError
-          ? 'bg-red-300 dark:bg-red-900'
+          ? 'bg-red-300 dark:bg-red-700'
           : 'bg-yellow-300 dark:bg-yellow-700',
       ]"
     >
-      <ExclamationIcon v-if="isError" />
-      <StarIcon v-else />
+      <AlertIcon class="w-5 h-5" v-if="isError" />
+      <StarIcon class="w-5 h-5" v-else />
     </span>
     <p
-      class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400 text-justify"
+      class="story-content mb-4 text-base font-normal text-gray-500 dark:text-gray-200 text-justify"
     >
       {{ text }}
     </p>
@@ -24,7 +24,7 @@
 import { onMounted } from 'vue'
 import Choices from './Choices.vue'
 import StarIcon from '../icons/StarIcon.vue'
-import ExclamationIcon from '../icons/ExclamationIcon.vue'
+import AlertIcon from '../icons/AlertIcon.vue'
 import { showFragment } from '../anime.ts'
 
 const props = defineProps({
@@ -64,3 +64,19 @@ function addFragment(choice: string) {
   }
 }
 </script>
+
+<style scoped>
+@font-face {
+  font-family: 'Cinzel';
+  src:
+    url('../fonts/Cinzel-Regular.woff2') format('woff2'),
+    url('../fonts/Cinzel-Regular.woff') format('woff'),
+    url('../fonts/Cinzel-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+.story-content {
+  font-family: 'Cinzel', sans-serif;
+}
+</style>

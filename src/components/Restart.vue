@@ -5,7 +5,7 @@
     @click="$emit('restart')"
     :disabled="isDisabled"
   >
-    <RefreshIcon class="me-2" v-if="isStarted" />
+    <RestartIcon class="me-2" v-if="isStarted" />
     <span v-if="isStarted">Volver a empezar</span>
     <span v-if="isStarted" class="sr-only">Restart</span>
 
@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import RefreshIcon from '../icons/RefreshIcon.vue'
 import BookIcon from '../icons/BookIcon.vue'
+import RestartIcon from '../icons/RestartIcon.vue'
 
 defineProps({
   isDisabled: {

@@ -9,13 +9,13 @@
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="icon icon-tabler icons-tabler-outline icon-tabler-book"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle"
   >
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-    <path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" />
-    <path d="M3 6l0 13" />
-    <path d="M12 6l0 13" />
-    <path d="M21 6l0 13" />
+    <path d="M12 9v4" />
+    <path
+      d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"
+    />
+    <path d="M12 16h.01" />
   </svg>
 </template>

@@ -31,9 +31,9 @@
           <button
             type="submit"
             :disabled="!!choiceSelected"
-            class="absolute top-0 end-0 p-2.5 h-full text-sm font-medium rounded-e-lg border focus:ring-4 focus:outline-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+            class="absolute top-0 end-0 px-2.5 h-full text-sm font-medium rounded-e-lg border focus:ring-4 focus:outline-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
           >
-            <ArrowRightIcon />
+            <ChevronRightIcon />
           </button>
         </div>
       </div>
@@ -51,7 +51,7 @@ import {
   throttle,
 } from '../utils.ts'
 import { fadeOutFast, fadeOutSlow, slide } from '../anime.ts'
-import ArrowRightIcon from '../icons/ArrowRightIcon.vue'
+import ChevronRightIcon from '../icons/ChevronRightIcon.vue'
 
 const props = defineProps({
   fragmentId: {
