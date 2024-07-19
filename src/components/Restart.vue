@@ -7,7 +7,7 @@
   >
     <RestartIcon class="me-2" v-if="isStarted" />
     <span v-if="isStarted">Volver a empezar</span>
-    <span v-if="isStarted" class="sr-only">Restart</span>
+    <span v-if="isStarted" class="sr-only">Volver a empezar</span>
 
     <BookIcon class="me-2" v-if="!isStarted" />
     <span v-if="!isStarted">Empezar</span>
@@ -29,4 +29,6 @@ defineProps({
     required: true,
   },
 })
+
+defineEmits(['restart'])
 </script>
