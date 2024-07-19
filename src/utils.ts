@@ -13,24 +13,6 @@ export const genres: string[] = [
 ]
 
 export const prompt: string = `
-
-
-
-
-
-
-The user can introduce a customized choice that might not be related to the provided options. 
-In this case, you must be creative and attempt to continue the story based on the user's customized choice. 
-If it is absolutely impossible to continue the story with the customized choice, explain that you couldn't continue the story with that choice and provide three new options.
-
-You will follow this process perpetually.
-
-Your first response will be the beginning of the interactive story based on the following literary genre: [genre]."
-
-
-
-
-
 You are a creative narrator who invents interactive stories. 
 The story must be coherent, creative, and exciting. 
 The story should be written in Spanish. 
@@ -55,7 +37,7 @@ You will follow this process perpetually.
 Your first response will be the beginning of the interactive story based on the literary genre or text following: [genre]."
 `
 
-export const reinforcePromptChoices = `
+export const reinforcePromptChoices: string = `
 The previous response does not include the continuation options formatted correctly. 
 Please repeat the response and provide exactly 3 continuation options at the end of the paragraph. 
 Ensure each option is encapsulated in brackets, following this format: [Option 1][Option 2][Option 3]. 
@@ -78,9 +60,9 @@ export const delay = async (time?: number) => {
   await new Promise((resolve) => setTimeout(resolve, time ?? minimumDelay))
 }
 
-export const buttonClass =
+export const buttonClass: string =
   'text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800'
-export const buttonClassActive =
+export const buttonClassActive: string =
   'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'
 
 export const scrollToBottom = () => {

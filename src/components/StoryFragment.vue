@@ -1,5 +1,5 @@
 <template>
-  <li :id="`fragment-${id}`" class="mb-10 ms-6">
+  <li :id="`story-fragment-${id}`" class="mb-10 ms-6">
     <span
       class="absolute flex items-center justify-center w-6 h-6 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900"
       :class="[
@@ -12,20 +12,24 @@
       <StarIcon class="w-5 h-5" v-else />
     </span>
     <p
-      class="story-content mb-4 text-base font-normal text-gray-500 dark:text-gray-200 text-justify"
+      class="story-content-text mb-4 text-base font-normal text-gray-500 dark:text-gray-200 text-justify"
     >
       {{ text }}
     </p>
-    <Choices :fragmentId="id" :choices="choices" @selectChoice="addFragment" />
+    <StoryChoices
+      :fragmentId="id"
+      :choices="choices"
+      @selectChoice="selectChoice"
+    />
   </li>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Choices from './Choices.vue'
+import StoryChoices from './StoryChoices.vue'
 import StarIcon from '../icons/StarIcon.vue'
 import AlertIcon from '../icons/AlertIcon.vue'
-import { showFragment } from '../anime.ts'
+import { showStoryFragment } from '../anime.ts'
 
 const props = defineProps({
   id: {
@@ -46,21 +50,21 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['addFragment', 'retry'])
+const emit = defineEmits(['addStoryFragment', 'retryStoryFragment'])
 
 onMounted(() => {
-  showFragment([`#fragment-${props.id}`])
+  showStoryFragment([`#story-fragment-${props.id}`])
   window.scrollTo({
     top: document.body.scrollHeight,
     behavior: 'smooth',
   })
 })
 
-function addFragment(choice: string) {
+function selectChoice(choice: string) {
   if (props.isError) {
-    emit('retry')
+    emit('retryStoryFragment')
   } else {
-    emit('addFragment', choice)
+    emit('addStoryFragment', choice)
   }
 }
 </script>
@@ -76,7 +80,7 @@ function addFragment(choice: string) {
   font-style: normal;
 }
 
-.story-content {
+.story-content-text {
   font-family: 'Cinzel', sans-serif;
 }
 </style>

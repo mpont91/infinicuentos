@@ -1,41 +1,41 @@
 <template>
   <div id="story" class="mx-auto max-w-3xl">
     <div id="controls" class="text-center my-8">
-      <Restart
+      <RestartButton
         :isStarted="isStarted"
         :isDisabled="isRestartDisabled"
         @restart="restart"
       />
     </div>
     <div :key="renderKey" id="content" v-if="isStarted">
-      <Introduction />
-      <Genre @selectGenre="beginStory" />
+      <StoryIntro />
+      <GenreSelector @selectGenre="beginStory" />
       <ol
         id="storyline"
         class="relative border-s border-gray-200 dark:border-gray-700"
       >
-        <Fragment
+        <StoryFragment
           v-for="(fragment, index) in fragments"
           :text="fragment.message"
           :id="index + 1"
           :choices="fragment.choices"
           :isError="fragment.isError"
-          @addFragment="addFragment"
-          @retry="retry"
+          @addStoryFragment="addStoryFragment"
+          @retryStoryFragment="retryStoryFragment"
         />
       </ol>
-      <LoadingFragment v-if="isLoadingFragment" />
+      <LoadingStoryFragment v-if="isLoadingFragment" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import Introduction from './Introduction.vue'
-import Genre from './genre.vue'
-import Fragment from './Fragment.vue'
-import LoadingFragment from './LoadingFragment.vue'
-import Restart from './Restart.vue'
+import StoryIntro from './StoryIntro.vue'
+import GenreSelector from './GenreSelector.vue'
+import StoryFragment from './StoryFragment.vue'
+import LoadingStoryFragment from './LoadingStoryFragment.vue'
+import RestartButton from './RestartButton.vue'
 import { delay, throttle, prompt } from '../utils.ts'
 import type { CoreMessage } from 'ai'
 import type { FragmentType } from '../types.ts'
@@ -59,7 +59,7 @@ async function beginStory(genre: string) {
   isRestartDisabled.value = false
 }
 
-async function addFragment(choice: string) {
+async function addStoryFragment(choice: string) {
   isRestartDisabled.value = true
   messages.push({
     role: 'user',
@@ -70,7 +70,7 @@ async function addFragment(choice: string) {
   isRestartDisabled.value = true
 }
 
-async function retry() {
+async function retryStoryFragment() {
   isRestartDisabled.value = true
   await apiRequest()
   isRestartDisabled.value = false

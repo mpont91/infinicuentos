@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets'
+import logo from '../images/logo.webp'
+import MasksTheaterIcon from '../icons/MasksTheaterIcon.vue'
+import SparklesIcon from '../icons/SparklesIcon.vue'
+import BranchIcon from '../icons/BranchIcon.vue'
+import GamepadIcon from '../icons/GamepadIcon.vue'
+import GithubIcon from '../icons/GithubIcon.vue'
+---
+
+<div class="mt-1 mb-4 mx-auto max-w-3xl">
+  <Image src={logo} alt="Infinicuentos logo" width="200" class="mx-auto mb-8" />
+  <h1 class="text-2xl mb-4">
+    Bienvenido a <strong class="text-yellow-400">Infinicuentos</strong>
+    <a
+      type="button"
+      class="ms-4 text-yellow-400 border border-yellow-400 hover:bg-yellow-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:focus:ring-yellow-900 dark:hover:bg-yellow-400"
+      href="https://github.com/mpont91/infinicuentos"
+      target="_blank"
+    >
+      <GithubIcon />
+      <span class="sr-only">Github link</span>
+    </a>
+  </h1>
+
+  <p class="mb-2">
+    Infinicuentos es una aplicación interactiva que te permite crear historias
+    únicas y personalizadas con la ayuda de inteligencia artificial. Aquí puedes
+    sumergirte en aventuras sin fin, explorar mundos fantásticos, resolver
+    misterios intrigantes y mucho más.
+  </p>
+</div>
+
+<div class="grid lg:mb-0 lg:w-full lg:grid-cols-4 mx-auto">
+  <div
+    class="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+  >
+    <h2 class="mb-3 text-2xl font-semibold text-teal-400 text-center">
+      <MasksTheaterIcon class="w-8 h-8 mx-auto" />
+      Selecciona el género
+    </h2>
+    <p class="text-balance text-sm opacity-50 mx-auto text-center">
+      Aventura, fantasía, ciencia ficción, misterio, terror, histórico,
+      romántico, suspense, comedia o crea uno personalizado.
+    </p>
+  </div>
+  <div
+    class="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+  >
+    <h2 class="mb-3 text-2xl font-semibold text-cyan-400 text-center">
+      <SparklesIcon class="w-8 h-8 mx-auto" />
+      Inicia tu historia
+    </h2>
+    <p class="text-balance text-sm opacity-50 mx-auto text-center">
+      La inteligencia artificial generará un fragmento inicial de la historia
+      basado en el género que has seleccionado.
+    </p>
+  </div>
+  <div
+    class="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+  >
+    <h2 class="mb-3 text-2xl font-semibold text-indigo-400 text-center">
+      <BranchIcon class="w-8 h-8 mx-auto" />
+      Decide el rumbo
+    </h2>
+    <p class="text-balance text-sm opacity-50 mx-auto text-center">
+      Al final de cada fragmento, se te presentarán varias opciones para decidir
+      cómo continúa la historia o crea tu propio camino.
+    </p>
+  </div>
+  <div
+    class="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+  >
+    <h2 class="mb-3 text-2xl font-semibold text-purple-400 text-center">
+      <GamepadIcon class="w-8 h-8 mx-auto" />
+      Experiencia interactiva
+    </h2>
+    <p class="text-balance text-sm opacity-50 mx-auto text-center">
+      A medida que tomas decisiones, la historia se desarrollará en tiempo real,
+      ofreciéndote una experiencia interactiva y única.
+    </p>
+  </div>
+</div>
+
+<p class="my-4 max-w-3xl mx-auto">
+  Prepárate para una experiencia narrativa única donde cada elección que hagas
+  influirá en el curso de la historia. ¡Déjate llevar por tu imaginación y crea
+  tu propia aventura con Infinicuentos!
+</p>

@@ -28,7 +28,7 @@ export const slideUpIn = (targets: string[], delay: number) => {
   })
 }
 
-export const showFragment = (targets: string[]) => {
+export const showStoryFragment = (targets: string[]) => {
   anime({
     targets: targets,
     opacity: [0, 1],
