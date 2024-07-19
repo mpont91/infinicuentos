@@ -3,7 +3,7 @@
     <div id="controls" class="text-center my-8">
       <Restart
         :isStarted="isStarted"
-        :isDisabled="restartIsDisabled"
+        :isDisabled="isRestartDisabled"
         @restart="restart"
       />
     </div>
@@ -43,31 +43,37 @@ import { fall } from '../anime.ts'
 
 const isStarted: boolean = ref(false)
 const isLoadingFragment: boolean = ref(false)
+const isRestartDisabled: boolean = ref(false)
 const fragments: FragmentType[] = reactive([])
 const messages: CoreMessage[] = []
 const renderKey: number = ref(0)
-const restartIsDisabled: boolean = ref(false)
 
 async function beginStory(genre: string) {
+  isRestartDisabled.value = true
   messages.push({
     role: 'system',
     content: prompt.replace('[genre]', genre),
   })
 
   await apiRequest()
+  isRestartDisabled.value = false
 }
 
 async function addFragment(choice: string) {
+  isRestartDisabled.value = true
   messages.push({
     role: 'user',
     content: choice,
   })
 
   await apiRequest()
+  isRestartDisabled.value = true
 }
 
 async function retry() {
+  isRestartDisabled.value = true
   await apiRequest()
+  isRestartDisabled.value = false
 }
 
 async function apiRequest() {
@@ -104,7 +110,7 @@ async function apiRequest() {
 }
 
 async function restart() {
-  restartIsDisabled.value = true
+  isRestartDisabled.value = true
   if (isStarted.value) {
     fall(['#content'])
     await delay()
@@ -113,6 +119,6 @@ async function restart() {
   }
   renderKey.value += 1
   isStarted.value = true
-  restartIsDisabled.value = false
+  isRestartDisabled.value = false
 }
 </script>
