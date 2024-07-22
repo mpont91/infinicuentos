@@ -13,7 +13,11 @@ const groq = createOpenAI({
 const regex = /\[(.*?)\]/g
 
 export async function generate(messages: CoreMessage[], uuid: string) {
-  await storeUserChoices(messages, uuid)
+  try {
+    await storeUserChoices(messages, uuid)
+  } catch (error: unknown) {
+    // Ignore the error. Not useful for the user.
+  }
 
   const limitTries: number = 5
   let isChoicesValid: boolean = false
