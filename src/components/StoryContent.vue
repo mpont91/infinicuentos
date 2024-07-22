@@ -48,6 +48,13 @@ const fragments: FragmentType[] = reactive([])
 const messages: CoreMessage[] = []
 const renderKey: number = ref(0)
 
+const props = defineProps({
+  uuid: {
+    type: String,
+    required: true,
+  },
+})
+
 async function beginStory(genre: string) {
   isRestartDisabled.value = true
   messages.push({
@@ -87,6 +94,7 @@ async function apiRequest() {
     },
     body: JSON.stringify({
       messages: messages,
+      uuid: props.uuid,
     }),
   })
 

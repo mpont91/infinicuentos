@@ -9,7 +9,10 @@ const headers = {
 export async function POST({ request }: { request: Request }) {
   try {
     const params = await request.json()
-    const generation: FragmentType = await generate(params.messages)
+    const generation: FragmentType = await generate(
+      params.messages,
+      params.uuid,
+    )
     const result: string = JSON.stringify(generation)
 
     return new Response(result, {

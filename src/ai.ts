@@ -3,6 +3,7 @@ import { generateText, type CoreMessage } from 'ai'
 import type { FragmentType } from './types.ts'
 import { ai, reinforcePromptChoices } from './utils.ts'
 import { ChoicesError } from './errors/ChoicesError.ts'
+import { insert } from './server/choices-repository.ts'
 
 const groq = createOpenAI({
   baseURL: 'https://api.groq.com/openai/v1',
@@ -11,7 +12,9 @@ const groq = createOpenAI({
 
 const regex = /\[(.*?)\]/g
 
-export async function generate(messages: CoreMessage[]) {
+export async function generate(messages: CoreMessage[], uuid: string) {
+  await storeUserChoices(messages, uuid)
+
   const limitTries: number = 5
   let isChoicesValid: boolean = false
   let currentTry: number = 0
@@ -61,4 +64,8 @@ function createFragment(text: string): FragmentType {
     choices: choices,
     isError: false,
   }
+}
+
+async function storeUserChoices(messages: CoreMessage[], uuid: string) {
+  await insert(uuid, messages[messages.length - 1].content.toString())
 }
