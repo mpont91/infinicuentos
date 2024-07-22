@@ -24,7 +24,7 @@
             v-model="creativeChoice"
             :class="[
               isCreativeChoiceSelected && creativeChoice === choiceSelected
-                ? [buttonClassActive, 'w-full']
+                ? [buttonClassActive]
                 : 'block p-2.5 w-full z-20 text-sm rounded-lg border rounded-2 bg-transparent dark:border-blue-500 dark:text-blue-500',
             ]"
           />
