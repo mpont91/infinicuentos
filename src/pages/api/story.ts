@@ -1,6 +1,9 @@
 import { generate } from '../../ai.ts'
 import type { FragmentType } from '../../types.ts'
 import { ChoicesError } from '../../errors/ChoicesError.ts'
+import { MaxRetriesError } from '../../errors/MaxRetriesError.ts'
+import { choicesError } from '../../utils.ts'
+import { DefaultError } from '../../errors/DefaultError.ts'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -20,29 +23,33 @@ export async function POST({ request }: { request: Request }) {
       headers: headers,
     })
   } catch (error: unknown) {
-    let message: string = 'Algo inesperado ha ido mal al generar la historia...'
-
-    if (error instanceof ChoicesError) {
-      message = error.message
-    }
-
-    if (error instanceof Error && 'reason' in error) {
-      const errorWithReason = error as { reason: string }
-      if (errorWithReason.reason === 'maxRetriesExceeded') {
-        message =
-          'Se ha alcanzado el límite de peticiones por minuto. ' +
-          'Espera unos segundos antes de volver a intentar...'
-      }
-    }
-
-    const fragmentError: FragmentType = {
-      message: message,
-      choices: ['Volver a intentar'],
-      isError: true,
-    }
+    const fragmentError: FragmentType = createFragmentError(error)
     return new Response(JSON.stringify(fragmentError), {
       status: 500,
       headers: headers,
     })
   }
+}
+
+function createFragmentError(error: unknown) {
+  const defaultError = new DefaultError()
+  let message: string = defaultError.message
+
+  if (error instanceof ChoicesError) {
+    message = error.message
+  }
+
+  if (error instanceof Error && 'reason' in error) {
+    const errorWithReason = error as { reason: string }
+    if (errorWithReason.reason === 'maxRetriesExceeded') {
+      const maxRetriesError = new MaxRetriesError()
+      message = maxRetriesError.message
+    }
+  }
+
+  return {
+    message: message,
+    choices: choicesError,
+    isError: true,
+  } as FragmentType
 }

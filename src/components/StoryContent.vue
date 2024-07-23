@@ -36,10 +36,12 @@ import GenreSelector from './GenreSelector.vue'
 import StoryFragment from './StoryFragment.vue'
 import LoadingStoryFragment from './LoadingStoryFragment.vue'
 import RestartButton from './RestartButton.vue'
-import { delay, throttle, prompt } from '../utils.ts'
+import { delay, throttle, prompt, choicesError } from '../utils.ts'
 import type { CoreMessage } from 'ai'
 import type { FragmentType } from '../types.ts'
 import { fall } from '../anime.ts'
+import { DefaultError } from '../errors/DefaultError.ts'
+import { TimeoutError } from '../errors/TimeoutError.ts'
 
 const isStarted: boolean = ref(false)
 const isLoadingFragment: boolean = ref(false)
@@ -87,34 +89,54 @@ async function apiRequest() {
   isLoadingFragment.value = true
   const startTime: number = Date.now()
 
-  const result = await fetch('/api/story', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      messages: messages,
-      uuid: props.uuid,
-    }),
-  })
-
-  const fragment: FragmentType = await result.json()
-
-  const elapsedTime: number = Date.now() - startTime
-  if (elapsedTime < throttle) {
-    await delay(throttle - elapsedTime)
-  }
-
-  fragments.push(fragment)
-
-  if (result.status === 200) {
-    messages.push({
-      role: 'assistant',
-      content: fragment.message,
+  try {
+    const result = await fetch('/api/story', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: messages,
+        uuid: props.uuid,
+      }),
     })
-  }
 
-  isLoadingFragment.value = false
+    const elapsedTime: number = Date.now() - startTime
+    if (elapsedTime < throttle) {
+      await delay(throttle - elapsedTime)
+    }
+
+    let fragment: FragmentType
+
+    if (result.status === 504) {
+      const timeoutError = new TimeoutError()
+      fragment = {
+        message: timeoutError.message,
+        isError: true,
+        choices: choicesError,
+      }
+    } else {
+      fragment = await result.json()
+    }
+
+    if (result.status === 200) {
+      messages.push({
+        role: 'assistant',
+        content: fragment.message,
+      })
+    }
+
+    fragments.push(fragment)
+  } catch (error: unknown) {
+    const defaultError = new DefaultError()
+    fragments.push({
+      message: defaultError.message,
+      isError: true,
+      choices: choicesError,
+    })
+  } finally {
+    isLoadingFragment.value = false
+  }
 }
 
 async function restart() {

@@ -83,3 +83,5 @@ export const calculateDistanceBetweenElements = (
 
   return x2 - x1
 }
+
+export const choicesError: string[] = ['Volver a intentar']

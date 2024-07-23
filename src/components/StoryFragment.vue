@@ -19,6 +19,7 @@
     <StoryChoices
       :fragmentId="id"
       :choices="choices"
+      :isError="isError"
       @selectChoice="selectChoice"
     />
   </li>

@@ -14,7 +14,7 @@
       >
         {{ choice }}
       </button>
-      <div id="creative-choice" class="w-full">
+      <div v-if="!isError" id="creative-choice" class="w-full">
         <div class="relative">
           <input
             type="text"
@@ -61,6 +61,10 @@ const props = defineProps({
   choices: {
     type: Array<string>,
     required: true,
+  },
+  isError: {
+    type: Boolean,
+    default: false,
   },
 })
 
