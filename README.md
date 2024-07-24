@@ -4,6 +4,17 @@
 
 Infinicuentos es una aplicación web que te permite crear historias interactivas personalizadas usando inteligencia artificial. Escoge el género, toma decisiones y vive una experiencia única. La historia se desarrolla en tiempo real a medida que seleccionas las opciones que se te presentan.
 
+## IA API key
+Esta aplicación utiliza por defecto el proveedor [Groq](https://groq.com/) usando una 
+API key de capa gratuita.
+Por lo que pueden ocurrir limitaciones de uso al intentar generar la historia, ya sea 
+porque hay muchos usuarios interactuando a la vez o simplemente demasiadas peticiones 
+por minuto.
+
+Para evitar esta limitación se ha añadido la funcionalidad de configurar tu propia API 
+key. Pulsando el botón de "configuración" que aparece en la parte de la presentación.
+Podrás añadir tu API key ya sea de [Groq](https://groq.com/) o de [Openai](https://openai.com/).
+
 ## Características
 
 - **Escoge el género:** Aventura, fantasía, ciencia ficción, misterio, terror, histórico, romántico, suspense, comedia o puedes introducir uno personalizado.
@@ -17,6 +28,8 @@ Infinicuentos es una aplicación web que te permite crear historias interactivas
 - **[Vue](https://vuejs.org/):** Framework JavaScript progresivo para construir interfaces de usuario.
 - **[Vercel SDK AI](https://vercel.com/docs/ai):** Herramienta para integrar servicios de inteligencia artificial.
 - **[Groq](https://groq.com/):** Proveedor de servicios de inteligencia artificial para generación de texto avanzado utilizando el modelo llama3-70b-8192.
+- **[Openai](https://openai.com/):** Proveedor de servicios de inteligencia artificial 
+  para generación de texto avanzado utilizando el modelo gpt-4o.
 - **[Tailwind CSS](https://tailwindcss.com/):** Framework de CSS para construir interfaces de usuario personalizables y modernas.
 - **[Flowbite](https://flowbite.com/):** Biblioteca de componentes UI basados en Tailwind CSS.
 - **[anime.js](https://animejs.com/):** Biblioteca JavaScript para animaciones.
