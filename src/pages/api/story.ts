@@ -4,6 +4,7 @@ import { ChoicesError } from '../../errors/ChoicesError.ts'
 import { MaxRetriesError } from '../../errors/MaxRetriesError.ts'
 import { choicesError } from '../../utils.ts'
 import { DefaultError } from '../../errors/DefaultError.ts'
+import { InvalidApiKeyError } from '../../errors/InvalidApiKeyError.ts'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -15,6 +16,7 @@ export async function POST({ request }: { request: Request }) {
     const generation: FragmentType = await generate(
       params.messages,
       params.uuid,
+      params.apikey,
     )
     const result: string = JSON.stringify(generation)
 
@@ -44,6 +46,22 @@ function createFragmentError(error: unknown) {
     if (errorWithReason.reason === 'maxRetriesExceeded') {
       const maxRetriesError = new MaxRetriesError()
       message = maxRetriesError.message
+    }
+  }
+
+  if (error instanceof Error && 'data' in error) {
+    const errorWithData = error as {
+      data: {
+        error: {
+          message: string
+          type: string
+          code: string
+        }
+      }
+    }
+    if ((errorWithData.data.error.code = 'invalid_api_key')) {
+      const invalidApiKeyError = new InvalidApiKeyError()
+      message = invalidApiKeyError.message
     }
   }
 

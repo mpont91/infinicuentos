@@ -5,14 +5,18 @@ import { ai, reinforcePromptChoices } from './utils.ts'
 import { ChoicesError } from './errors/ChoicesError.ts'
 import { insert } from './server/choices-repository.ts'
 
-const groq = createOpenAI({
-  baseURL: 'https://api.groq.com/openai/v1',
-  apiKey: import.meta.env.GROQ_API_KEY,
-})
-
 const regex = /\[(.*?)\]/g
 
-export async function generate(messages: CoreMessage[], uuid: string) {
+export async function generate(
+  messages: CoreMessage[],
+  uuid: string,
+  apikey: string = '',
+) {
+  const groq = createOpenAI({
+    baseURL: 'https://api.groq.com/openai/v1',
+    apiKey: apikey ? apikey : import.meta.env.GROQ_API_KEY,
+  })
+
   try {
     await storeUserChoices(messages, uuid)
   } catch (error: unknown) {
