@@ -16,7 +16,8 @@ export async function POST({ request }: { request: Request }) {
     const generation: FragmentType = await generate(
       params.messages,
       params.uuid,
-      params.apikey,
+      params.apiKey,
+      params.provider,
     )
     const result: string = JSON.stringify(generation)
 

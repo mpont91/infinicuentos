@@ -1,5 +1,3 @@
-import type { AIConfig } from './types.ts'
-
 export const genres: string[] = [
   'Aventura',
   'Fantasía',
@@ -47,11 +45,12 @@ Repeat the previous response including the correct options.
 Remember that the entire story and options must be written in Spanish.
 `
 
-export const ai: AIConfig = {
-  model: 'llama3-70b-8192',
-  temperature: 1.3,
-  maxTokens: 2000,
-}
+export const aiTemperature: number = 1.3
+export const aiMaxTokens: number = 2000
+export const aiGroqModel: string = 'llama3-70b-8192'
+export const aiOpenaiModel: string = 'gpt-4o'
+export const aiOpenaiBaseURL: string = 'https://api.openai.com/v1'
+export const aiGroqBaseURL: string = 'https://api.groq.com/openai/v1'
 
 export const throttle: number = 3000
 

@@ -42,7 +42,7 @@ import type { FragmentType } from '../types.ts'
 import { fall } from '../anime.ts'
 import { DefaultError } from '../errors/DefaultError.ts'
 import { TimeoutError } from '../errors/TimeoutError.ts'
-import { apikey } from '../apikeyStore.ts'
+import { apiKey, provider } from '../apiKeyStore.ts'
 import { useStore } from '@nanostores/vue'
 
 const isStarted: boolean = ref(false)
@@ -100,7 +100,8 @@ async function apiRequest() {
       body: JSON.stringify({
         messages: messages,
         uuid: props.uuid,
-        apikey: useStore(apikey).value,
+        apiKey: useStore(apiKey).value,
+        provider: useStore(provider).value,
       }),
     })
 

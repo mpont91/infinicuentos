@@ -1,7 +1,15 @@
 import { createOpenAI } from '@ai-sdk/openai'
 import { generateText, type CoreMessage } from 'ai'
-import type { FragmentType } from './types.ts'
-import { ai, reinforcePromptChoices } from './utils.ts'
+import type { FragmentType, Provider } from './types.ts'
+import {
+  aiGroqBaseURL,
+  aiGroqModel,
+  aiMaxTokens,
+  aiOpenaiBaseURL,
+  aiOpenaiModel,
+  aiTemperature,
+  reinforcePromptChoices,
+} from './utils.ts'
 import { ChoicesError } from './errors/ChoicesError.ts'
 import { insert } from './server/choices-repository.ts'
 
@@ -11,11 +19,9 @@ export async function generate(
   messages: CoreMessage[],
   uuid: string,
   apikey: string = '',
+  provider: Provider = 'openai',
 ) {
-  const groq = createOpenAI({
-    baseURL: 'https://api.groq.com/openai/v1',
-    apiKey: apikey ? apikey : import.meta.env.GROQ_API_KEY,
-  })
+  const model = createProvider(apikey, provider)
 
   try {
     await storeUserChoices(messages, uuid)
@@ -30,10 +36,10 @@ export async function generate(
 
   while (!isChoicesValid && currentTry < limitTries) {
     const result = await generateText({
-      model: groq(ai.model),
+      model: model,
       messages: messages,
-      temperature: ai.temperature,
-      maxTokens: ai.maxTokens,
+      temperature: aiTemperature,
+      maxTokens: aiMaxTokens,
     })
 
     text = result.text
@@ -76,4 +82,33 @@ function createFragment(text: string): FragmentType {
 
 async function storeUserChoices(messages: CoreMessage[], uuid: string) {
   await insert(uuid, messages[messages.length - 1].content.toString())
+}
+
+function createProvider(apiKey: string, provider: Provider) {
+  if (!apiKey) {
+    apiKey = import.meta.env.GROQ_API_KEY
+    provider = 'groq'
+  }
+
+  let baseURL: string
+  let AIModel: string
+
+  switch (provider) {
+    case 'groq':
+      baseURL = aiGroqBaseURL
+      AIModel = aiGroqModel
+      break
+    case 'openai':
+      baseURL = aiOpenaiBaseURL
+      AIModel = aiOpenaiModel
+      break
+  }
+
+  const AIProvider = createOpenAI({
+    compatibility: 'strict',
+    baseURL: baseURL,
+    apiKey: apiKey,
+  })
+
+  return AIProvider(AIModel)
 }

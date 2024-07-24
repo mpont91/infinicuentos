@@ -3,7 +3,7 @@
     type="button"
     class="ms-4 border hover:text-white focus:ring-4 focus:outline-none font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:hover:text-white"
     :class="[
-      isApikeySaved
+      isApiKeySaved
         ? 'text-green-400 border-green-400 hover:bg-green-500 focus:ring-green-300 dark:border-green-300 dark:text-green-300 dark:focus:ring-green-900 dark:hover:bg-green-400'
         : 'text-yellow-400 border-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:border-yellow-300 dark:text-yellow-300 dark:focus:ring-yellow-900 dark:hover:bg-yellow-400',
     ]"
@@ -45,21 +45,63 @@
             Pero puedes añadir la tuya para evitar esas limitaciones.
           </p>
           <form class="space-y-4" @submit="onSubmit">
+            <ul
+              class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            >
+              <li
+                class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+              >
+                <div class="flex items-center ps-3">
+                  <input
+                    v-model="providerForm"
+                    id="openai"
+                    type="radio"
+                    value="openai"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  <label
+                    for="openai"
+                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Openai API
+                  </label>
+                </div>
+              </li>
+
+              <li class="w-full dark:border-gray-600">
+                <div class="flex items-center ps-3">
+                  <input
+                    v-model="providerForm"
+                    id="groq"
+                    type="radio"
+                    value="groq"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  <label
+                    for="groq"
+                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >
+                    Groq API
+                  </label>
+                </div>
+              </li>
+            </ul>
+
             <div>
               <label
-                for="apikey"
+                for="api-key"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Groq API key</label
+                >API key</label
               >
               <input
                 type="password"
-                name="apikey"
+                name="api-key"
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                v-model="apikeyForm"
+                v-model="apiKeyForm"
               />
               <p
-                v-if="isApikeySaved"
+                v-if="isApiKeySaved"
                 class="mt-2 text-sm text-green-600 dark:text-green-500"
               >
                 Ya hay una API key guardada
@@ -83,12 +125,14 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import SettingsIcon from '../icons/SettingsIcon.vue'
 import CloseIcon from '../icons/CloseIcon.vue'
-import { apikey } from '../apikeyStore.ts'
+import { apiKey, provider } from '../apiKeyStore.ts'
 import { useStore } from '@nanostores/vue'
+import type { Provider } from '../types.ts'
 
 const isModalVisible: boolean = ref(false)
-const apikeyForm: string = ref(useStore(apikey).value)
-const isApikeySaved: boolean = ref(false)
+const apiKeyForm: string = ref(useStore(apiKey).value)
+const providerForm: Provider = ref(useStore(provider).value)
+const isApiKeySaved: boolean = ref(false)
 
 // Ensure event listeners are cleaned up
 onMounted(() => {
@@ -127,8 +171,9 @@ function removeKeydownListener() {
 
 function onSubmit(event: Event) {
   event.preventDefault()
-  apikey.set(apikeyForm.value)
+  apiKey.set(apiKeyForm.value)
+  provider.set(providerForm.value)
   hideModal()
-  isApikeySaved.value = apikeyForm.value
+  isApiKeySaved.value = apiKeyForm.value
 }
 </script>

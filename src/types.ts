@@ -4,8 +4,4 @@ export interface FragmentType {
   isError: boolean
 }
 
-export interface AIConfig {
-  model: string
-  temperature: number
-  maxTokens: number
-}
+export type Provider = 'openai' | 'groq'
