@@ -134,15 +134,20 @@ const apiKeyForm: string = ref(useStore(apiKey).value)
 const providerForm: Provider = ref(useStore(provider).value)
 const isApiKeySaved: boolean = ref(false)
 
-// Ensure event listeners are cleaned up
 onMounted(() => {
-  if (isModalVisible.value) {
-    addKeydownListener()
-  }
-})
+  const apiKeyLocalStorage = window.localStorage.getItem('apikey')
+  const providerLocalStorage = window.localStorage.getItem('provider')
 
-onUnmounted(() => {
-  removeKeydownListener()
+  if (apiKeyLocalStorage) {
+    apiKeyForm.value = apiKeyLocalStorage
+    apiKey.set(apiKeyForm.value)
+    isApiKeySaved.value = true
+  }
+
+  if (providerLocalStorage) {
+    providerForm.value = providerLocalStorage
+    provider.set(providerForm.value)
+  }
 })
 
 function showModal() {
@@ -171,8 +176,12 @@ function removeKeydownListener() {
 
 function onSubmit(event: Event) {
   event.preventDefault()
+
   apiKey.set(apiKeyForm.value)
   provider.set(providerForm.value)
+  localStorage.setItem('apikey', apiKeyForm.value)
+  localStorage.setItem('provider', providerForm.value)
+
   hideModal()
   isApiKeySaved.value = apiKeyForm.value
 }
